@@ -3,4 +3,90 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <welcome-file-list>
+        <welcome-file>jsp/login/login.jsp</welcome-file>
+        <!--  <welcome-file>jsp/index.jsp</welcome-file>-->
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>SpringMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/applicationContext*.xml</param-value>
+            <!--  <param-value>classpath:bean/applicationContext.xml</param-value>-->
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SpringMVC</servlet-name>
+        <!-- 前台发起调用格式此-处也可以配置成 *.do 形式 -->
+        <url-pattern>*.do</url-pattern>
+        <!-- 后台发起格式调用-.json格式-->
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/applicationContext*.xml</param-value>
+    </context-param>
+
+
+    <!-- 编码过滤器 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- spring监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--长连接项目启动监听器-->
+    <!-- <listener>
+         <listener-class>com.twjitm.common.listener.StartupServerListener</listener-class>
+     </listener>-->
+  <!--  <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error/404.html</location>
+    </error-page>-->
+
+    <!-- 防止spring内存溢出监听器，比如quartz -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- log4j2-begin -->
+    <!--<context-param>
+        <param-name>log4jConfiguration</param-name>
+        <param-value>classpath:bean/log4j2-config.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>log4jServletFilter</filter-name>
+        <filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>log4jServletFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>-->
+    <!-- log4j2-end -->
+
+
 </web-app>
