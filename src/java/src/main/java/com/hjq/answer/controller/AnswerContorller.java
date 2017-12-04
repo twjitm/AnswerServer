@@ -22,36 +22,37 @@ public class AnswerContorller {
     public AnswerService answerService;
 
     @RequestMapping("plist")
-    public String paperList(HttpServletRequest request){
+    public String paperList(HttpServletRequest request) {
         request.setAttribute("plist", answerService.getallPapers());
-    return "/plist";
+        return "/plist";
     }
+
     @RequestMapping("elist")
-    public String explainList(HttpServletRequest request){
+    public String explainList(HttpServletRequest request) {
         List<Choices> choices = answerService.getAllChoices();
-        List<Explain> explains= answerService.getAllExplain();
-        request.setAttribute("choices",choices);
-        request.setAttribute("explains",explains);
+        List<Explain> explains = answerService.getAllExplain();
+        request.setAttribute("choices", choices);
+        request.setAttribute("explains", explains);
         return "/elist";
     }
-    public String delete(HttpServletRequest request,Integer id){
+
+    public String delete(HttpServletRequest request, Integer id) {
         answerService.deletePaper(id);
-         return "redirect:/answer/plist.do";
+        return "redirect:/answer/plist.do";
     }
 
     @RequestMapping("addsubject")
-    public String addSubject(HttpServletRequest request, SubjectVo subjectVo){
-       int type=subjectVo.getQtype();
-        String json=JSON.toJSONString(subjectVo);
-       if(type== Qtypes.TYPE_CHOICES.getValue()){
-           Choices choices=  JSON.parseObject(json, Choices.class);
-           answerService.addChoices(choices);
-       }else {
-           Explain explain=   JSON.parseObject(json, Explain.class);
-           answerService.addExplain(explain);
-       }
-      return "redirect:/answer/elist.do";
+    public String addSubject(HttpServletRequest request, SubjectVo subjectVo) {
+        int type = subjectVo.getQtype();
+        String json = JSON.toJSONString(subjectVo);
+        if (type == Qtypes.TYPE_CHOICES.getValue()) {
+            Choices choices = JSON.parseObject(json, Choices.class);
+            answerService.addChoices(choices);
+        } else {
+            Explain explain = JSON.parseObject(json, Explain.class);
+            answerService.addExplain(explain);
+        }
+        return "redirect:/answer/elist.do";
     }
-
 
 }
