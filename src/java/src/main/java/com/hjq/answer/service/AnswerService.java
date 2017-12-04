@@ -3,7 +3,7 @@ package com.hjq.answer.service;
 import com.hjq.answer.entity.AnswerVo;
 import com.hjq.answer.entity.Choices;
 import com.hjq.answer.entity.Explain;
-import com.hjq.papers.entity.Papers;
+import com.hjq.answer.entity.Papers;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import java.util.List;
  * Created by 文江 on 2017/11/30.
  */
 public interface AnswerService {
+
     public void addExplain(Explain exception);
 
     public void addChoices(Choices choices);
@@ -20,7 +21,7 @@ public interface AnswerService {
     public void updateAnwer(Object object, int type);
 
     public List<Explain> getAllExceptionBytype(int type);
-
+    public List<Explain> getAllExplain();
     public Explain getExceptionById(int id);
 
     public Explain getExceptionById(int id, int type);
@@ -32,5 +33,9 @@ public interface AnswerService {
     public void addPapers(Papers papers);
 
     public  boolean combination(String title,List<AnswerVo> answerVos);
+
+        //papers
+    public List<Papers>getallPapers();
+    public void deletePaper(int id);
 
 }

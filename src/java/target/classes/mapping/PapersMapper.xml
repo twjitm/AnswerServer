@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hjq.answer.dao.PapersMapper" >
-  <resultMap id="BaseResultMap" type="com.hjq.answer.entity.Papers" >
+<mapper namespace="com.hjq.papers.dao.PapersMapper" >
+  <resultMap id="BaseResultMap" type="com.hjq.papers.entity.Papers" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
@@ -19,13 +19,13 @@
     delete from papers
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hjq.answer.entity.Papers" >
+  <insert id="insert" parameterType="com.hjq.papers.entity.Papers" >
     insert into papers (id, title, url
       )
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.hjq.answer.entity.Papers" >
+  <insert id="insertSelective" parameterType="com.hjq.papers.entity.Papers" >
     insert into papers
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hjq.answer.entity.Papers" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.hjq.papers.entity.Papers" >
     update papers
     <set >
       <if test="title != null" >
@@ -62,7 +62,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hjq.answer.entity.Papers" >
+  <update id="updateByPrimaryKey" parameterType="com.hjq.papers.entity.Papers" >
     update papers
     set title = #{title,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR}

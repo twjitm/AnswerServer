@@ -12,6 +12,8 @@
     <meta charset="UTF-8">
 </head>
 <body>
+<
+
 <div id="wrapper">
    <%-- <jsp:include page="main/newindex.jsp"></jsp:include>--%>
     <div id="page-wrapper">

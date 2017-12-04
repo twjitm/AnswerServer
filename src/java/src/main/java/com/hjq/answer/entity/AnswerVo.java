@@ -4,6 +4,7 @@ package com.hjq.answer.entity;
  * Created by 文江 on 2017/11/30.
  */
 public class AnswerVo {
+    private int score;
     private  int type;
     private  int number;
 
@@ -21,5 +22,13 @@ public class AnswerVo {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

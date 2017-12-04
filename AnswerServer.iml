@@ -98,5 +98,6 @@
     <orderEntry type="library" name="Maven: com.itextpdf:itext-asian:5.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk15on:1.54" level="project" />
     <orderEntry type="library" name="Maven: com.itextpdf.tool:xmlworker:5.5.11" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="TomEE 8.0.14" level="application_server_libraries" />
   </component>
 </module>

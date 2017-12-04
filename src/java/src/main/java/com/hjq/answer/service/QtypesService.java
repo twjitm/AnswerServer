@@ -1,6 +1,5 @@
 package com.hjq.answer.service;
 
-import com.hjq.answer.entity.Qtypes;
 
 import java.util.List;
 

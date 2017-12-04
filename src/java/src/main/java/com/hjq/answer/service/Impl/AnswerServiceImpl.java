@@ -8,15 +8,11 @@ import com.hjq.answer.entity.Explain;
 import com.hjq.answer.enums.Qtypes;
 import com.hjq.answer.service.AnswerService;
 import com.hjq.answer.service.QtypesService;
-import com.hjq.papers.dao.PapersMapper;
-import com.hjq.papers.entity.Papers;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.hjq.answer.dao.PapersMapper;
+import com.hjq.answer.entity.Papers;
+import com.hjq.utils.HtmlUtils;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -81,16 +77,46 @@ public class AnswerServiceImpl implements AnswerService {
 
     }
 
+    /**
+     * 试卷生成
+     * @return
+     */
+
     @Override
     public boolean combination(String title, List<AnswerVo> answerVos) {
         String setverPath = "//";
         String fileType = ".html";
-        String pdfFileType = ".pdf";
-        String context = "";
         if (answerVos == null || answerVos.size() == 0) return false;
         //排序标号
+        StringBuffer stringBuffer=new StringBuffer();
+        stringBuffer.append("<!doctype html>");
+        stringBuffer.append(HtmlUtils.getHead(title));
+        stringBuffer.append("<body>");
+        stringBuffer.append("<div>");
+        stringBuffer.append(HtmlUtils.getStyle());
+        stringBuffer.append("<header class=\"wrap-header\">\n" +
+                "      <article>\n" +
+                "        <div class=\"wrap-title\" >\n" +
+                "          <h1>" +
+                "<span>" +
+                "河北大学 2018 " +
+                title +
+                " 期末考试" +
+                "</span></h1>\n" +
+                "          <p>考试时间:2018年12月1日</p>\n" +
+                "        </div>\n" +
+                "      </article>\n" +
+                "    </header>");
+        stringBuffer.append(" <div class=\"row row-info\">");
         for (int i = 0; i < answerVos.size(); i++) {
             int answerType = answerVos.get(i).getType();
+            stringBuffer.append("<article class=\"markup\">" +
+                    "  <h2 class=\"section-title\">" +
+                    "" +
+                    i +
+                    Qtypes.getTitle(answerType) +(answerVos.get(i).getScore())+
+                    "</h2>"
+            );
             //处理选择题
             if (answerType == Qtypes.TYPE_CHOICES.getValue()) {
                 List<Choices> choicesList = this.getAllChoices();
@@ -100,9 +126,19 @@ public class AnswerServiceImpl implements AnswerService {
                 }
                 int[] finalIdarray=getRandomArray(answerVos.get(i).getNumber(),idList);
                 for (int j=0;j<finalIdarray.length;j++){
+                    stringBuffer.append("<p>");
                     Choices choices=choicesMapper.selectByPrimaryKey(finalIdarray[i]);
-                    //拼接格式啦
+                    stringBuffer.append("第"+j+"题:"+choices.getTitle());
+                    stringBuffer.append("</p>");
+                    stringBuffer.append("<blockquote>");
+                    String answers=choices.getAnswer();
+                    String [] anser=answers.split("#");
+                    for(int m=0;m<anser.length;m++){
+                        stringBuffer.append(anser[m]);
+                    }
+                    stringBuffer.append(" </blockquote>");
                 }
+                stringBuffer.append("</article>");
             }
             //非选着题
             String BagTitle=Qtypes.getTitle(answerType);
@@ -117,6 +153,10 @@ public class AnswerServiceImpl implements AnswerService {
                //拼接格式了
            }
         }
+        stringBuffer.append("\n" +
+                "  </div>\n" +
+                "</body>\n" +
+                "</html>");
         boolean success = false;
         File file = new File(setverPath + fileType + fileType);
         try {
@@ -125,43 +165,17 @@ public class AnswerServiceImpl implements AnswerService {
             }
             FileWriter fileWriter = new FileWriter(file);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(context);
+            bufferedWriter.write(stringBuffer.toString());
             bufferedWriter.close();
             success = true;
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (success) {
-                success = false;
-                String xmlFile = file.getPath();
-                Document document = new Document();
-                try {
-                    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(setverPath + title + pdfFileType));
-                    document.open();
-                    XMLWorkerHelper.getInstance().parseXHtml(writer, document, new FileInputStream(xmlFile), Charset.forName("UTF-8"));
-                    document.addTitle(title);
-                    document.addAuthor("hjq");
-                    document.addCreationDate();
-                    document.close();
-                    writer.close();
-                    success = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (success) {
-                        Papers papers = new Papers();
-                        papers.setTitle(title);
-                        papers.setUrl(xmlFile);
-                        this.addPapers(papers);
-                    }
-                }
-            }
         }
         return false;
     }
 
+
     private int[] getRandomArray(int length, List<Integer> region) {
-       Thread  thread=new Thread();
 
         int[] array = new int[length];
         List<Integer> list = new ArrayList<Integer>();
@@ -177,4 +191,17 @@ public class AnswerServiceImpl implements AnswerService {
         }
         return array;
     }
+
+    @Override
+    public List<Papers> getallPapers() {
+
+        return papersMapper.getAllPapers();
+    }
+
+    @Override
+    public void deletePaper(int id) {
+        papersMapper.deleteByPrimaryKey(id);
+    }
+
+
 }

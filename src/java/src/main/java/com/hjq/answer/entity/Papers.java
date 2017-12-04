@@ -1,4 +1,4 @@
-package com.hjq.papers.entity;
+package com.hjq.answer.entity;
 
 public class Papers {
     private Integer id;

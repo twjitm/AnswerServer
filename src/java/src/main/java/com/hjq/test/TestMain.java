@@ -20,8 +20,8 @@ public class TestMain {
     public static void main(String[] args) {
         Document document = new Document();
         try {
-           String HTML ="G:/test.html";
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("G:/test.pdf"));
+           String HTML ="C:\\Users\\文江\\Downloads\\ftmp_121_ub\\index.html";
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("G:/index.pdf"));
             document.open();
            XMLWorkerHelper.getInstance().parseXHtml(writer, document, new FileInputStream(HTML), Charset.forName("UTF-8"));
            // document.add(new Paragraph("<a>Hello World!</a>"));

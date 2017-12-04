@@ -1,6 +1,8 @@
-package com.hjq.papers.dao;
+package com.hjq.answer.dao;
 
-import com.hjq.papers.entity.Papers;
+import com.hjq.answer.entity.Papers;
+
+import java.util.List;
 
 public interface PapersMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +16,6 @@ public interface PapersMapper {
     int updateByPrimaryKeySelective(Papers record);
 
     int updateByPrimaryKey(Papers record);
+
+    List<Papers> getAllPapers();
 }
